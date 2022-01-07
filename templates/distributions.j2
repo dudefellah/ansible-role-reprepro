@@ -1,0 +1,18 @@
+{% for dist in distributions %}
+Origin: {{ dist.origin }}
+Label: {{ dist.label }}
+Codename: {{ dist.codename }}
+Architectures: {% if (dist.architectures is iterable) and (dist.architectures is not string) %}{{ dist.architectures | join(' ') }}{% else %}{{ dist.architectures }}{% endif %}
+
+Components: {% if (dist.components is iterable) and (dist.components is not string) %}{{ dist.components | join(' ') }}{% else %}{{ dist.components }}{% endif %}
+
+Description: {{ dist.description }}
+SignWith: {{ dist.sign_with }}
+{% if (dist.deb_override | default(none)) is not none %}
+DebOverride: {{ dist.deb_override }}
+{% endif %}
+{% if (dist.dsc_override | default(none)) is not none %}
+DscOverride: {{ dist.dsc_override }}
+{% endif %}
+
+{% endfor %}

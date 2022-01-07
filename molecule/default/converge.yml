@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-role-reprepro"
+      include_role:
+        name: "ansible-role-reprepro"

@@ -1,0 +1,41 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+platforms:
+  - name: reprepro-centos8
+    image: "geerlingguy/docker-centos8-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+  - name: reprepro-debian9
+    image: "geerlingguy/docker-debian9-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+  - name: reprepro-debian10
+    image: "geerlingguy/docker-debian10-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        reprepro_distributions_config:
+          - origin: Test
+            label: Test Repo
+            codename: buster
+            architectures:
+              - amd64
+              - i386
+            components: main
+            description: Test Apt repo
+            sign_with: 0A9916D97FF91CC5F94650EAB5D15DDCD8B587F0
+        reprepro_public_keys:
+          - src: key.gpg
+            name: test
+  playbooks:
+    prepare: ../resources/playbooks/prepare.yml
+verifier:
+  name: ansible

@@ -1,0 +1,118 @@
+---
+- hosts: all
+  tasks:
+    - name: Install GPG
+      ansible.builtin.package:
+        name: gpg
+        state: present
+        update_cache: true
+
+    - name: Write the secret key to a file
+      ansible.builtin.copy:
+        dest: /tmp/key.key
+        content: |
+          -----BEGIN PGP PRIVATE KEY BLOCK-----
+
+          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
+          8OGirLS5G5hwF/pbiKmU+uPI3QHQtfw=
+          =Xe02
+          -----END PGP PRIVATE KEY BLOCK-----
+
+    - name: GPG import secret key
+      ansible.builtin.command:
+        gpg --import /tmp/key.key
+
+    - name: Write GPG public key
+      ansible.builtin.copy:
+        dest: /tmp/key.key
+        content: |
+          -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+          mQENBGHXcOoBCACisRliC7m6UHxo2gZeGXx9nMHSDKeUerVA0GBjINu7oCdqpUB2
+          e1mHLXqbaX4LIVDgbh7O/6DxBNDJPiNs3bjVDk+H+aExhb0Tp/ldeWraoO4274mR
+          ygqFsGN+RSLaMTTGbdNBlHHGGkPhEQfeFUTrj3I0zQp3u+M4PIPQ5pcqEProzPIh
+          6iEHXvutkKO5xPTdDPln+QUtVgWjFcKaT9wZBLd1xGSNV/LJpiB3AWjoJPsMdZve
+          KUIih3wh0LZt0DeRqjJTpnQnQyy1F9LdBAOvNVHdSTH6VDYSRE9D5GHX100ushJP
+          lYX8LNBD4FY1tPLPT0XDEbrMlf2m0LW/lSbBABEBAAG0CVRlc3QgUmVwb4kBVAQT
+          AQgAPhYhBAqZFtl/+RzF+UZQ6rXRXdzYtYfwBQJh13DqAhsDBQkDwmcABQsJCAcC
+          BhUKCQgLAgQWAgMBAh4BAheAAAoJELXRXdzYtYfwoo8H/0y/4cyn7lB/BHDRj9eH
+          jaWV0GDKVrdWH6WlQ+XhCfj2mk3pscn8mpTOfCDZ1o3pI5ZhZtwGxshXxUTiQVSC
+          12AECPCz839nDSKSdNsMJ+WOhnayOGTVK7OyvAxeVXBBLZK5JcgLXiJ+6xU1BaYS
+          VTbr64ZeeQAtawGgOIlUNty+RWx0URCYzal72bL7Mzv4F7MWq8cfJlb2PJNfEltH
+          fwxu2s8jTVWdQVe3qUJMhygHczxaHPBMt2cM89r7wd/epHN4G8fuJSRfhHf2783I
+          EFvDBkA50w3Daag6bA8R8hFslveYOGq0irQVLh+ynChXNaTgdzcHkJytoJHTqpkG
+          +zu5AQ0EYddw6gEIAO4Nqx7jevahgKdIKhndJiG6HjqwXBM4qUAVeKm3G3bV7PoQ
+          alZv5EBjf4lDey7d5z6WrKKWsiAakRu8Pf8CbAxcDxBbJ1EzYE0UIE68WdUOAqAt
+          NwBHPWcZrZrlPmr0pwPlNjdkketFpq0Ffd3zX9LO7ip/j8r6dmqzARl9tBQNIBue
+          Hihp9DSs2t7JI19hAZHpSHKJk/vq5fNoIv7cKp1EaP5Fvdv8tliDfGhGZSf/A1UN
+          HMRXU1x3YRdzqYqstKRtEh6EUi4hlEM70GLwG36a9Bxsw5Mrzw6PThqpdzOEmV/y
+          0D2xDdjegewq0YlXz73+51C9h4sA6Ty0v1zX37EAEQEAAYkBPAQYAQgAJhYhBAqZ
+          Ftl/+RzF+UZQ6rXRXdzYtYfwBQJh13DqAhsMBQkDwmcAAAoJELXRXdzYtYfwDhYH
+          /iwLYC8m9hcSpvIBfxCVqVlCPkwKdUCrTif/6sIBQyYhrCV56vJ/iXHcAQ2Q2XL+
+          RpoPxU02uSgdlqg33vfdtiWj2lSpEewAKzIyzb28wYRUGsKTd4mcL9GNhE5kMHet
+          Ki5eXza31Yt+4HJbGQjwDDnDWmAASypx0kKNdCjsJzwCg8NJDIg5ZdijWsUeQama
+          BYpCT8hKijcHIJiWNsCFT5RicZip8lDMX7MFybmfx7QqF7bEn5J1PPZqe4YilGpi
+          8zQY+Ga8qcwSdHlrXDrEqWvuZjNES+ax4KAP9anMIMDY0tMpAuDx3cfi8OGirLS5
+          G5hwF/pbiKmU+uPI3QHQtfw=
+          =CyKK
+          -----END PGP PUBLIC KEY BLOCK-----
+
+    - name: GPG import secret key
+      ansible.builtin.command:
+        gpg --import /tmp/key.key
+
+    - name: Remove the key file
+      ansible.builtin.file:
+        path: /tmp/key.key
+        state: absent

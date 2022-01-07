@@ -1,0 +1,17 @@
+---
+- name: Set installable packages list
+  set_fact:
+    _reprepro_packages: >-
+      {%- if reprepro_packages is not none -%}
+      {{ reprepro_packages }}
+      {%- elif (
+        (ansible_distribution in __rr_reprepro_packages)
+        and (ansible_distribution_major_version|string in __rr_reprepro_packages[ansible_distribution])
+      ) -%}
+      {{ __rr_reprepro_packages[ansible_distribution][ansible_distribution_major_version|string] }}
+      {%- elif (
+        (ansible_distribution in __rr_reprepro_packages)
+        and ('default' in __rr_reprepro_packages[ansible_distribution])
+      ) -%}
+      {{ __rr_reprepro_packages[ansible_distribution]['default'] }}
+      {%- endif -%}

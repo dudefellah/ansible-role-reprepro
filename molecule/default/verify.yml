@@ -1,0 +1,26 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Copy a dummy .deb package
+      ansible.builtin.copy:
+        src: tests/test_1.0-1_all.deb
+        dest: /tmp/test_1.0-1_all.deb
+
+    - name: Use reprepro to install the test Debian package
+      ansible.builtin.command: >-
+        reprepro -b /srv/repos/apt/debian includedeb buster /tmp/test_1.0-1_all.deb
+
+    - name: Look for the package
+      ansible.builtin.command: >-
+        reprepro -b /srv/repos/apt/debian/ list buster test
+      register: __testpkg
+
+    - name: Test that the package was added
+      ansible.builtin.assert:
+        that: 
+          - "'buster|main|' in __testpkg.stdout"
+          - "': test 1.0' in __testpkg.stdout"

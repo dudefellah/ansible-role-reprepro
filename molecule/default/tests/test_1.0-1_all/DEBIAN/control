@@ -1,0 +1,11 @@
+Package: test
+Version: 1.0
+Architecture: all
+Section: net
+Priority: optional
+Maintainer: Me <me@mydomain.com>
+Description: Print "test"
+ How many times have you needed to echo "test", but didn't want to
+ 'echo "test"'?  Well now you're in luck! Install this package, add
+ /opt/test-1.0/bin to your $PATH, and you'll be able to 'echo "test"' by
+ writing 'test.sh'. That's a 33% increase in efficiency!

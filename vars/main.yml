@@ -1,0 +1,9 @@
+---
+# vars file for ansible-role-reprepro
+__rr_reprepro_packages:
+  CentOS:
+    default:
+      - reprepro
+  Debian:
+    default:
+      - reprepro

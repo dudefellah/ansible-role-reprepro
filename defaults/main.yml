@@ -1,0 +1,73 @@
+---
+# defaults file for ansible-role-reprepro
+#
+# This values lists packages to be installed when using this role. If
+# left `null`, this role tries to install what it thinks is appropriate
+# (which basically amounts to installing the `reprepro` pkg in this case).
+#
+# If you set this to a custom list, those packages will be installed. An empty
+# list will prevent any packages from being installed by this role.
+reprepro_packages: null
+
+# These values determine the user and groups who will own the files installed
+# by this role.
+reprepro_user: root
+reprepro_group: root
+
+# The location of the reprepro base. The various files and sub-paths for
+# reprepro will be installed under this path.
+reprepro_base_dir: /srv/repos/apt/debian
+
+# This is a list of distrobutions to add to your config/distributions
+# Each entry in the list is a yaml-ified version of what appears in the
+# `distributions` file. Generally, this just means the dict keys are all
+# lower-case.
+# Eg.
+#   - origin: Project name
+#     label: Project label
+#     codename: <release>
+#     architectures: i386 amd64 ... (or ['i386', 'amd64'...])
+#     components: main ... (or ['main', 'contrib'...])
+#     description: My apt repo
+#     sign_with: <key>
+reprepro_distributions_config: []
+
+# Each entry in this list will be added as a line to conf/optinos.
+# Eg.
+#   - verbose
+#   - basedir /srv/repos/apt/debian
+#   - ask-passphrase
+reprepro_options_config: []
+
+# This dict is keyed by package names. Each package entry has a list
+# of override values in the form of entries with {name: <name>, value: <value>}
+# entries.
+#
+# Eg.
+#   gcc:
+#     - name: Priority
+#       value: required
+#   nginx:
+#     - name: Section
+#       value: net
+reprepro_overrides_config: {}
+
+# A list of public keys to make available in your reprepro repo path.
+# Each entry has a name and content OR src (src takes priority).
+# `name` sets the name of the file to be written (minus the .gpg.key extension).
+# If `content` is set, then that will be written to the file.
+# If `src` is set, then that file will be copied to the destination path.
+#
+# Eg.
+#   - name: mykey
+#     src: mykey.gpg
+#
+#  or
+#
+#   - name: mykey
+#     content: |
+#       -----BEGIN PGP PUBLIC KEY BLOCK-----
+#
+#       mQENBGHXcOoBCACisRliC7m6UHxo2gZeGXx9nMHSDKeUerVA0GBjINu7oCdqpUB2
+#       ...
+reprepro_public_keys: []

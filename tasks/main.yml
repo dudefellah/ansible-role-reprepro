@@ -1,0 +1,75 @@
+---
+# tasks file for ansible-role-reprepro
+- name: Gather role facts
+  include_tasks: __rr_gather_facts.yml
+
+- name: Install dependency packages
+  ansible.builtin.package:
+    name: "{{ _reprepro_packages }}"
+    state: present
+
+- name: Create the reprepro config directory
+  ansible.builtin.file:
+    path: "{{ reprepro_base_dir }}/conf"
+    owner: "{{ reprepro_user }}"
+    group: "{{ reprepro_group }}"
+    mode: "0750"
+    state: directory
+
+- name: Set the `distributions` file
+  ansible.builtin.template:
+    src: distributions.j2
+    dest: "{{ reprepro_base_dir }}/conf/distributions"
+    owner: "{{ reprepro_user }}"
+    group: "{{ reprepro_group }}"
+    mode: "0640"
+  vars:
+    distributions: "{{ reprepro_distributions_config }}"
+
+- name: Set the `options` file
+  ansible.builtin.template:
+    src: options.j2
+    dest: "{{ reprepro_base_dir }}/conf/options"
+    owner: "{{ reprepro_user }}"
+    group: "{{ reprepro_group }}"
+    mode: "0640"
+  vars:
+    options: "{{ reprepro_options_config }}"
+
+- name: Set the `overrides` file
+  ansible.builtin.template:
+    src: overrides.j2
+    dest: "{{ reprepro_base_dir }}/conf/overrides"
+    owner: "{{ reprepro_user }}"
+    group: "{{ reprepro_group }}"
+    mode: "0640"
+  vars:
+    overrides: "{{ reprepro_overrides_config }}"
+  when:
+    - "reprepro_overrides_config|bool"
+
+- name: Write out the public key files from src
+  ansible.builtin.copy:
+    src: "{{ __rr_key.src }}"
+    dest: "{{ reprepro_base_dir }}/conf/{{ __rr_key.name }}.gpg.key"
+    owner: "{{ reprepro_user }}"
+    group: "{{ reprepro_group }}"
+    mode: "0644"
+  loop: "{{ reprepro_public_keys | selectattr('src', 'defined') }}"
+  loop_control:
+    loop_var: __rr_key
+
+- name: Write out the public key files from content
+  ansible.builtin.copy:
+    content: "{{ __rr_key.content }}"
+    dest: "{{ reprepro_base_dir }}/conf/{{ __rr_key.name }}.gpg.key"
+    owner: "{{ reprepro_user }}"
+    group: "{{ reprepro_group }}"
+    mode: "0644"
+  loop: >-
+    {{ reprepro_public_keys
+       | selectattr('src', 'undefined')
+       | selectattr('src', 'none')
+       | selectattr('content', 'defined') }}
+  loop_control:
+    loop_var: __rr_key
