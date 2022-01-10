@@ -8,6 +8,9 @@ lint: |
   yamllint .
   ansible-lint .
 platforms:
+  - name: reprepro-centos7
+    image: "geerlingguy/docker-centos7-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
   - name: reprepro-centos8
     image: "geerlingguy/docker-centos8-ansible:latest"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
