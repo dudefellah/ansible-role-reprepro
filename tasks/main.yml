@@ -3,10 +3,19 @@
 - name: Gather role facts
   include_tasks: __rr_gather_facts.yml
 
+- name: Install EPEL
+  ansible.builtin.package:
+    name: "epel-release"
+    state: present
+  when:
+    - "reprepro_rhel_install_epel"
+    - "ansible_os_family == 'RedHat'"
+
 - name: Install dependency packages
   ansible.builtin.package:
     name: "{{ _reprepro_packages }}"
     state: present
+    update_cache: true
 
 - name: Create the reprepro config directory
   ansible.builtin.file:
@@ -51,7 +60,10 @@
 - name: Write out the public key files from src
   ansible.builtin.copy:
     src: "{{ __rr_key.src }}"
-    dest: "{{ reprepro_base_dir }}/conf/{{ __rr_key.name }}.gpg.key"
+    dest: >-
+      {{ __rr_key.dest
+          | default(reprepro_base_dir + '/conf/' +  __rr_key.name + '.gpg.key')
+      -}}
     owner: "{{ reprepro_user }}"
     group: "{{ reprepro_group }}"
     mode: "0644"

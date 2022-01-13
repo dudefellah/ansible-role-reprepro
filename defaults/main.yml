@@ -9,6 +9,10 @@
 # list will prevent any packages from being installed by this role.
 reprepro_packages: null
 
+# Set to true to have this role install the epel-release on RHEL systems.
+# Just here as a convenience.
+reprepro_rhel_install_epel: false
+
 # These values determine the user and groups who will own the files installed
 # by this role.
 reprepro_user: root
@@ -57,6 +61,8 @@ reprepro_overrides_config: {}
 # `name` sets the name of the file to be written (minus the .gpg.key extension).
 # If `content` is set, then that will be written to the file.
 # If `src` is set, then that file will be copied to the destination path.
+# If 'dest' is set, that path will be used to deposit the GPG key. If unset, the
+# file will be placed at `{{ reprepro_base_dir }}/conf/{{ name }}.gpg.key`
 #
 # Eg.
 #   - name: mykey
